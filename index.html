@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+     <script src="index.js"> </script>
+</head>
+<h1>Image Search App</h1>
+    <form>
+      <input type="text" id="search-input" placeholder="Search for images..." />
+      <button id="search-button">Search</button>
+    </form>
+    <div class="search-results">
+      <!-- <div class="search-result">
+        <img
+          src="https://plus.unsplash.com/premium_photo-1664361480561-3bdcd6eb3b6f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bmF0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=1000&q=60"
+          alt="image"
+        />
+        <a
+          href="https://unsplash.com/photos/g-7X6T7vAI4"
+          target="_blank"
+          rel="noopener noreferrer"
+          >an image of a beach</a
+        >
+      </div>
+      <div class="search-result">
+        <img
+          src="https://plus.unsplash.com/premium_photo-1664361480561-3bdcd6eb3b6f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bmF0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=1000&q=60"
+          alt="image"
+        />
+        <a
+          href="https://unsplash.com/photos/g-7X6T7vAI4"
+          target="_blank"
+          rel="noopener noreferrer"
+          >an image of a beach</a
+        >
+      </div>
+      <div class="search-result">
+        <img
+          src="https://plus.unsplash.com/premium_photo-1664361480561-3bdcd6eb3b6f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bmF0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=1000&q=60"
+          alt="image"
+        />
+        <a
+          href="https://unsplash.com/photos/g-7X6T7vAI4"
+          target="_blank"
+          rel="noopener noreferrer"
+          >an image of a beach</a
+        >
+      </div> -->
+    </div>
+    <button id="show-more-button">Show more</button>
+    <br>
+<div class="calculator">
+        <input type="text" id="result" readonly>
+        <div class="buttons">
+            <button class="clear">C</button>
+            <button class="operator">/</button>
+            <button class="operator">*</button>
+            <button class="operator">-</button>
+            <button class="number">7</button>
+            <button class="number">8</button>
+            <button class="number">9</button>
+            <button class="operator">+</button>
+            <button class="number">4</button>
+            <button class="number">5</button>
+            <button class="number">6</button>
+            <button class="equals">=</button>
+            <button class="number">1</button>
+            <button class="number">2</button>
+            <button class="number">3</button>
+            <button class="number">0</button>
+            <button class="decimal">.</button>
+        </div>
+    </div>
+ <div class="container">
+        <h1>Age Calculator</h1>
+        <div class="form">
+            <label for="birthday">Enter you date of birth</label>
+            <input type="date" id="birthday" name="birthday">
+            <button id="btn">Calculate Age</button>
+            <p id="result">Your age is 21 years old</p>
+        </div>
+    </div>
+        <img id="image" height="200" width="450" border="3">
+         <br>
+        <input type="file" id="file" onchange="imagePreview(event)">
+        <br>         
+        <br>
+    <button id="deletefile">deletefile</button
+        <br>
+        <h2>upload file and preview</h2>
+        <br>
+        <div class="chat-container">
+            <div id="chat-box"></div>
+            <input id="chat-input" type="text" placeholder="Type a message...">
+            <button id="chat-submit">Send</button>
+        </div>
+        <br>
+        <marquee bgcolor="blue" font-size="23"> 
+    <h3>created by deepak aggarwal for sample</h3>
+    <br>
+    <h3>contact at :8168173141</h3>
+    </marquee>
+<script> 
+const accessKey = "RZEIOVfPhS7vMLkFdd2TSKGFBS4o9_FmcV1Nje3FSjw";
+
+const formEl = document.querySelector("form");
+const searchInputEl = document.getElementById("search-input");
+const searchResultsEl = document.querySelector(".search-results");
+const showMoreButtonEl = document.getElementById("show-more-button");
+
+let inputData = "";
+let page = 1;
+
+async function searchImages() {
+  inputData = searchInputEl.value;
+  const url = `https://api.unsplash.com/search/photos?page=${page}&query=${inputData}&client_id=${accessKey}`;
+
+  const response = await fetch(url);
+  const data = await response.json();
+  if (page === 1) {
+    searchResultsEl.innerHTML = "";
+  }
+
+  const results = data.results;
+
+  results.map((result) => {
+    const imageWrapper = document.createElement("div");
+    imageWrapper.classList.add("search-result");
+    const image = document.createElement("img");
+    image.src = result.urls.small;
+    image.alt = result.alt_description;
+    const imageLink = document.createElement("a");
+    imageLink.href = result.links.html;
+    imageLink.target = "_blank";
+    imageLink.textContent = result.alt_description;
+
+    imageWrapper.appendChild(image);
+    imageWrapper.appendChild(imageLink);
+    searchResultsEl.appendChild(imageWrapper);
+  });
+
+  page++;
+
+  if (page > 1) {
+    showMoreButtonEl.style.display = "block";
+  }
+}
+
+formEl.addEventListener("submit", (event) => {
+  event.preventDefault();
+  page = 1;
+  searchImages();
+});
+
+showMoreButtonEl.addEventListener("click", () => {
+  searchImages();
+});
+const buttonsEl = document.querySelectorAll("button");
+
+const inputFieldEl = document.getElementById("result");
+
+for (let i = 0; i < buttonsEl.length; i++) {
+  buttonsEl[i].addEventListener("click", () => {
+    const buttonValue = buttonsEl[i].textContent;
+    if (buttonValue === "C") {
+      clearResult();
+    } else if (buttonValue === "=") {
+      calculateResult();
+    } else {
+      appendValue(buttonValue);
+    }
+  });
+}
+
+function clearResult() {
+  inputFieldEl.value = "";
+}
+
+function calculateResult() {
+  inputFieldEl.value = eval(inputFieldEl.value);
+}
+
+function appendValue(buttonValue) {
+  inputFieldEl.value += buttonValue;
+  //   inputFieldEl.value = inputFieldEl.value + buttonValue;
+}
+const btnEl = document.getElementById("btn");
+const birthdayEl = document.getElementById("birthday");
+const resultEl = document.getElementById("result");
+
+function calculateAge() {
+  const birthdayValue = birthdayEl.value;
+  if (birthdayValue === "") {
+    alert("Please enter your birthday");
+  } else {
+    const age = getAge(birthdayValue);
+    resultEl.innerText = `Your age is ${age} ${age > 1 ? "years" : "year"} old`;
+  }
+}
+
+function getAge(birthdayValue) {
+  const currentDate = new Date();
+  const birthdayDate = new Date(birthdayValue);
+  let age = currentDate.getFullYear() - birthdayDate.getFullYear();
+  const month = currentDate.getMonth() - birthdayDate.getMonth();
+
+  if (
+    month < 0 ||
+    (month === 0 && currentDate.getDate() < birthdayDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
+}
+
+btnEl.addEventListener("click", calculateAge);
+    function imagePreview(event) {
+        let image=document.getElementById('image');
+        let file=document.getElementById('file');
+        var fname=image.value;
+        image.src=URL.createObjectURL(event.target.files[0]);
+        console.log(file.value);
+        alert("thanks for uploading file");    }
+     let deletefile=document.getElementById('deletefile');
+     let image=document.getElementById('image');
+     deletefile.addEventListener('click',function () {
+        image.parentNode.removeChild(image);
+        alert("aap to bada bashram ho delete kardi photo");
+     });
+     class AIAssistant {
+    constructor() {
+        this.chatBox = document.getElementById('chat-box');
+        this.chatInput = document.getElementById('chat-input');
+        this.chatSubmit = document.getElementById('chat-submit');
+
+        this.chatSubmit.addEventListener('click', () => {
+            this.processUserInput();
+        });
+    }
+
+    processUserInput() {
+        const userInput = this.chatInput.value.trim();
+
+        if (userInput !== '') {
+            this.chatBox.innerHTML += `<p>You: ${userInput}</p>`;
+            this.chatInput.value = '';
+
+            const response = this.generateResponse(userInput);
+            this.chatBox.innerHTML+= `<p>Assistant: ${response}</p>`;
+        }
+    }
+
+    generateResponse(userInput) {
+        if (userInput.includes('hello') || userInput.includes('hi')) {
+            return 'Hello! How can I assist you today?';
+        } else if (userInput.includes('how are you')) {
+            return 'I\'m doing well, thank you for asking!';
+        } else if(userInput.includes('what are you doing')){
+            return 'I\'m chating with you,thanks';
+        } else if(userInput.includes('what is your friend')){
+            return 'I\'ve no riend';
+        }
+        else if(userInput.includes('is your girlfriend')){
+            return 'I have no girlfriend';
+        }
+        else if(userInput.includes('send a pic')){
+            return 'sorry';
+        }
+        else{
+            return 'I\'m not sure I understand. Can you please rephrase?';
+        }
+    }
+     }
+const assistant = new AIAssistant();
+</script>
+<style>
+    body {
+  background-color: #f9f9f9;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 60px;
+}
+
+#search-input {
+  width: 60%;
+  max-width: 400px;
+  padding: 10px 20px;
+  border: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  font-size: 18px;
+  color: #333;
+}
+
+#search-button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  font-size: 18px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+#search-button:hover {
+  background-color: #3e8e41;
+}
+
+.search-results {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.search-result {
+  margin-bottom: 60px;
+  width: 30%;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.search-result:hover img {
+  transform: scale(1.05);
+}
+
+.search-result img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+}
+.search-result a {
+  padding: 10px;
+  display: block;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.search-result:hover a {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#show-more-button {
+  background-color: #008cba;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  display: none;
+}
+
+#show-more-button:hover {
+  background-color: #0077b5;
+}
+
+@media screen and (max-width: 768px) {
+  .search-result {
+    width: 45%;
+  }
+}
+@media screen and (max-width: 480px) {
+  .search-result {
+    width: 100%;
+  }
+
+  form {
+    flex-direction: column;
+  }
+
+  #search-input {
+    margin-bottom: 20px;
+    width: 85%;
+  }
+}
+    * {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.calculator {
+  background-color: #f2f2f2;
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  border: solid 1px #ccc;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  margin-top: 40px;
+}
+
+#result{
+    width: 100%;
+    padding: 10px;
+    font-size: 24px;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) inset;
+    border-radius: 5px;
+}
+
+.buttons{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+    margin-top: 20px;
+}
+
+button{
+    padding: 10px;
+    font-size: 24px;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+}
+
+button:hover{
+    background-color: #ddd;
+}
+
+.clear{
+    background-color: #ff4136;
+    color: #fff;
+}
+
+.number, .decimal{
+    background-color: #fff;
+    color: #333;
+
+}
+
+.operator{
+    background-color: #0074d9;
+    color: #fff;
+}
+
+.equals{
+    background-color: #01ff70;
+    grid-row: span 3;
+    color: #fff;
+}
+    body {
+  margin: 0;
+  padding: 20px;
+  font-family: "Montserrat", sans-serif;
+  background-color: #f7f7f7;
+}
+
+.container {
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  border-radius: 5px;
+  margin-top: 50px;
+}
+
+h1 {
+  font-size: 36px;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 300px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0062cc;
+}
+
+#result {
+  margin-top: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+    body{
+        background-color: deeppink;
+    }
+    #image{
+        border: color(srgb red green blue);
+    }
+    .cent{
+         display: flex;
+        align-items: left;  
+           
+        height: 560cm;
+        width: 400cm;
+    }
+    @media screen and(width:500px){
+        body{         
+            background-color: aquamarine;
+        }
+    }
+    @media screen and (width:767px){
+        body{
+            background-color: yellow;
+        }
+    }
+    @media screen and (width:600px){
+        body{
+            background-color: azure;
+        }
+    }
+    .chat-container {
+        width: 400px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    #chat-box {
+        padding: 20px;
+        overflow-y: auto;
+        max-height: 300px;
+    }
+    
+    #chat-input {
+        width: 70%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+    }
+    
+    #chat-submit {
+        width: 30%;
+        padding: 10px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    #chat-submit:hover {
+        background-color: #3e8e41;
+    }
+</style>
+</body>
+</html>
